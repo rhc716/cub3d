@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:51:24 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/10 19:23:05 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/14 21:55:06 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,25 @@ typedef struct	s_env
 	int			ceiling;
 	int			row;
 	int			col;
+	double		posX_init;
+	double		posY_init;
+	double		dirX_init;
+	double		dirY_init;
 	int			env_error;
 	char		*env_error_msg;
 }				t_env;
+
+typedef struct	s_ray
+{
+	double		posX;
+	double		posY;
+	double		dirX;
+	double		dirY;
+	double		planeX;
+	double		planeY;
+	double		time;
+	double		oldtime;
+}				t_ray;
 
 void			parse_env(char *line, t_env *env);
 void			free_2d_array(char **array);
@@ -48,5 +64,7 @@ int				print_error(t_env *env, char *str);
 int				add_err_msg(t_env *env, char *str);
 int				check_valid_path(char *path);
 int				check_valid_env(t_env *env);
+void			init_env(t_env *env);
+//void			ray_caster(env);
 
 #endif

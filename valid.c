@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 18:23:55 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/10 20:00:01 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/14 22:22:49 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,33 @@ static int	find_hole_in_map(char **map, int i, int j)
 	return (-1);
 }
 
+static void set_player_pos_dir(t_env *env, int *cnt, int i, int j)
+{
+	(*cnt)++;
+	env->posX_init = i;
+	env->posY_init = j;
+	if (env->map[i][j] == 'N')
+	{
+		env->dirX_init = 0;
+		env->dirY_init = 1;
+	}
+	if (env->map[i][j] == 'W')
+	{
+		env->dirX_init = -1;
+		env->dirY_init = 0;
+	}
+	if (env->map[i][j] == 'E')
+	{
+		env->dirX_init = 1;
+		env->dirY_init = 0;
+	}
+	if (env->map[i][j] == 'S')
+	{
+		env->dirX_init = 0;
+		env->dirY_init = -1;
+	}
+}
+
 static int	check_valid_map(t_env *env)
 {
 	int i;
@@ -52,7 +79,7 @@ static int	check_valid_map(t_env *env)
 		while (env->map[i][++j])
 		{
 			if (ft_strchr("NEWS", env->map[i][j]))
-				cnt++;
+				set_player_pos_dir(env, &cnt, i, j);
 			if (ft_strchr("012 NEWS", env->map[i][j]) == 0)
 				return (add_err_msg(env, "\nMap error, illegal characters"));
 			if (env->map[i][j] == '0' && find_hole_in_map(env->map, i, j) == -1)
@@ -66,11 +93,15 @@ static int	check_valid_map(t_env *env)
 
 int			check_valid_env(t_env *env) // mlx)
 {
-	// 추가 필요
-	// int sizex;
-	// int sizey;
-	//mlx_get_screen_size(mlx, &sizex, &sizey);
-	if (env->width <= 0 || env->height <= 0) // || env->width > sizex || env->height > sizey)
+	void	*mlx;
+	int		sizex;
+	int		sizey;
+
+	mlx = mlx_init();
+	mlx_get_screen_size(mlx, &sizex, &sizey);
+	mlx_destroy_display(mlx);
+	free(mlx);
+	if (env->width <= 0 || env->height <= 0 || env->width > sizex || env->height > sizey)
 		add_err_msg(env, "\nThe resolution value is not valid");
 	if (!env->no || !env->so || !env->we || !env->ea || !env->sp)
 		add_err_msg(env, "\nThere is at least 1 incomplete image path");
