@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 18:09:34 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/14 22:07:34 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/15 16:42:31 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,48 +37,50 @@ void		test_print(t_env *env)
 	printf("player dirY : %f\n", env->dirY_init);
 }
 
-static int	read_file(char *file, t_env *env)
+static int	read_file(char *file, t_env *env, t_err *err)
 {
 	int		fd;
 	char	*line;
+	int		ret;
 
 	if ((fd = open(file, O_RDONLY)) == -1)
-		return (add_err_msg(env, "\nFailed to open the file."));
-	while (get_next_line(fd, &line) > 0)
+		return (add_err_msg(err, "\nFailed to open the file."));
+	while ((ret = get_next_line(fd, &line)) > 0)
 	{
-		parse_env(line, env);
+		parse_env(line, env, err);
 		free(line);
 		line = NULL;
 	}
-	parse_env(line, env);
+	if (ret == -1)
+		return (add_err_msg(err, "\nFailed to get the line"));
+	parse_env(line, env, err);
 	free(line);
-	if (check_valid_env(env) == -1)
+	if (check_valid_env(env, err) == -1)
 		return (-1);
-	test_print(env);
+	//test_print(env);
 	return (0);
 }
 
 int			main(int argc, char **argv)
 {
 	t_env *env;
+	t_err err;
 
-	if (!(env = (t_env *)malloc(sizeof(t_env))))
-		return (print_error(env, "malloc error"));
-	init_env(env);
-	if ((argc < 2 || argc > 3) ||
+	env = NULL;
+	init_error(&err);
+	if (!init_env(&env))
+		return (print_error_exit(&err, env, "malloc error"));
+	if ((argc < 2 || argc > 3 || (argc == 3 && ft_strlen(argv[2]) != 6)) ||
 		(argc == 3 && ft_strncmp(argv[2], "--save", 6) != 0))
-		return (print_error(env, "main function input value error"));
-	else if (argc == 3 && ft_strncmp(argv[2], "--save", 6) == 0)
-		return (write(1, "screen shot!\n", 13));
-	if (argc == 2)
+		return (print_error_exit(&err, env, "main() input option error"));
+	if (argc == 2 || (argc == 3 && !ft_strncmp(argv[2], "--save", 6)))
 	{
-		if (read_file(argv[1], env) == -1)
-		{
-			print_error(env, "");
-			return (free_all(env));
-		}
-		//ray_caster(env);
-		free_all(env); // 임시
+		if (read_file(argv[1], env, &err) == -1)
+			return (print_error_exit(&err, env, ""));
+		if (argc == 2)
+			ray_caster(env, &err, 1);
+		else
+			ray_caster(env, &err, 2);
 	}
-	return (0);
+	return (free_all(env));
 }

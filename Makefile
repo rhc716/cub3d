@@ -1,6 +1,6 @@
 all: 
 	make -C ./lib/libft
 	make -C ./lib/minilibx-linux
-	gcc -Wall -Wextra -Werror main.c parse.c error.c free.c valid.c init.c \
-	-g -L./lib/minilibx-linux -lmlx -L./lib/libft -lft -lm -lXext -lX11
+	gcc -Wall -Wextra -Werror main.c parse.c error.c free.c valid.c init.c ray_caster.c \
+	-g -L./lib/minilibx-linux -lmlx -lm -lXext -lX11 -L./lib/libft -lft
 	./a.out ./map/map.cub

@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 18:23:55 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/14 22:22:49 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/15 13:58:35 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void set_player_pos_dir(t_env *env, int *cnt, int i, int j)
 	}
 }
 
-static int	check_valid_map(t_env *env)
+static int	check_valid_map(t_env *env, t_err *err)
 {
 	int i;
 	int j;
@@ -81,17 +81,17 @@ static int	check_valid_map(t_env *env)
 			if (ft_strchr("NEWS", env->map[i][j]))
 				set_player_pos_dir(env, &cnt, i, j);
 			if (ft_strchr("012 NEWS", env->map[i][j]) == 0)
-				return (add_err_msg(env, "\nMap error, illegal characters"));
+				return (add_err_msg(err, "\nMap error, illegal characters"));
 			if (env->map[i][j] == '0' && find_hole_in_map(env->map, i, j) == -1)
-				return (add_err_msg(env, "\nMap error, 0 next blank or NULL"));
+				return (add_err_msg(err, "\nMap error, 0 next blank or NULL"));
 		}
 	}
 	if (cnt != 1)
-		return (add_err_msg(env, "\nMap error, Problems with player location"));
+		return (add_err_msg(err, "\nMap error, Problems with player location"));
 	return (0);
 }
 
-int			check_valid_env(t_env *env) // mlx)
+int			check_valid_env(t_env *env, t_err *err) // mlx)
 {
 	void	*mlx;
 	int		sizex;
@@ -102,11 +102,11 @@ int			check_valid_env(t_env *env) // mlx)
 	mlx_destroy_display(mlx);
 	free(mlx);
 	if (env->width <= 0 || env->height <= 0 || env->width > sizex || env->height > sizey)
-		add_err_msg(env, "\nThe resolution value is not valid");
+		add_err_msg(err, "\nThe resolution value is not valid");
 	if (!env->no || !env->so || !env->we || !env->ea || !env->sp)
-		add_err_msg(env, "\nThere is at least 1 incomplete image path");
-	check_valid_map(env);
-	if (env->env_error > 0)
+		add_err_msg(err, "\nThere is at least 1 incomplete image path");
+	check_valid_map(env, err);
+	if (err->env_error > 0)
 		return (-1);
 	return (0);
 }
