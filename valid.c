@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 18:23:55 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/15 13:58:35 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/18 00:12:36 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,23 @@ static void set_player_pos_dir(t_env *env, int *cnt, int i, int j)
 	env->posY_init = j;
 	if (env->map[i][j] == 'N')
 	{
-		env->dirX_init = 0;
-		env->dirY_init = 1;
-	}
-	if (env->map[i][j] == 'W')
-	{
 		env->dirX_init = -1;
 		env->dirY_init = 0;
 	}
-	if (env->map[i][j] == 'E')
-	{
-		env->dirX_init = 1;
-		env->dirY_init = 0;
-	}
-	if (env->map[i][j] == 'S')
+	if (env->map[i][j] == 'W')
 	{
 		env->dirX_init = 0;
 		env->dirY_init = -1;
+	}
+	if (env->map[i][j] == 'E')
+	{
+		env->dirX_init = 0;
+		env->dirY_init = 1;
+	}
+	if (env->map[i][j] == 'S')
+	{
+		env->dirX_init = 1;
+		env->dirY_init = 0;
 	}
 }
 

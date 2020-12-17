@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 18:35:22 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/15 17:29:21 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/17 23:40:27 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,12 @@ int			init_env(t_env **env)
 int			init_ray(t_ray *ray, t_env *env)
 {
 	env->ray = ray;
+	ray->planeX = 0;
+	ray->planeY = 0.66;
 	ray->posX = env->posX_init;
 	ray->posY = env->posY_init;
 	ray->dirX = env->dirX_init;
 	ray->dirY = env->dirY_init;
-	ray->planeX = 0;
-	ray->planeY = 0.66;
-	ray->time = 0;
-	ray->oldtime = 0;
-	env->width *= 0.9;
-	env->height *= 0.9;
 	ray->tilesize_x = (double)env->width/(double)env->col;
 	ray->tilesize_y = (double)env->height/(double)env->row;
 	ray->mlx = NULL;

@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:51:24 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/15 17:49:34 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/18 02:59:37 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,16 @@
 
 # define X_EVENT_KEY_PRESS	2
 # define X_EVENT_KEY_EXIT	17
+# define X_EVENT_RED_CROSS	33
 # define KEY_ESC			65307
+# define KEY_W				119
+# define KEY_S				115
+# define KEY_A				97
+# define KEY_D				100
+# define KEY_UP				65362
+# define KEY_DOWN			65364
+# define KEY_LEFT			65361
+# define KEY_RIGHT			65363
 # define KeyPressMask		(1L<<0)
 
 typedef struct	s_err
@@ -50,10 +59,23 @@ typedef struct	s_ray
 	double		dirY;
 	double		planeX;
 	double		planeY;
-	double		time;
-	double		oldtime;
+	double		cameraX;
+	double		rayDirX;
+	double		rayDirY;
+	int			mapX;
+	int			mapY;
+	double		sideDistX;
+    double		sideDistY;
+	double		deltaDistX;
+	double		deltaDistY;
+	double		perpWallDist;
+	int			stepX;
+    int			stepY;
+	int			hit;
+    int			side;
 	double		tilesize_x;
 	double		tilesize_y;
+	int			testv;//test
 	void		*mlx;
 	void		*win;
 	t_img		*img;
@@ -92,5 +114,6 @@ int				init_env(t_env **env);
 int				init_ray(t_ray *ray, t_env *env);
 void			init_error(t_err *err);
 int				ray_caster(t_env *env, t_err *err, int c);
+void			ray_main_loop(t_env *env);
 
 #endif
