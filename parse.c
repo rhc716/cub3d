@@ -6,33 +6,33 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:28:44 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/15 14:12:22 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/18 14:05:37 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	parse_map(char *line, t_env *env)
+static void	parse_map(char *line, t_env *env, t_err *err)
 {
 	int		len;
 	int		i;
 	char	**temp;
 
 	env->row++;
-	i = 0;
+	i = -1;
 	temp = (char **)malloc(sizeof(char *) * (env->row + 1));
 	temp[env->row] = 0;
-	while (env->row > 1 && env->map[i])
-	{
+	while (env->row > 1 && env->map[++i])
 		temp[i] = env->map[i];
-		i++;
-	}
 	temp[env->row - 1] = ft_strdup(line);
 	free(env->map);
 	env->map = temp;
 	len = ft_strlen(line);
 	if (env->col < len)
 		env->col = len;
+	if (!env->width || !env->height || !env->no || !env->so || !env->we || !env->ea
+	|| !env->sp || !env->map || !env->floor || !env->ceiling)
+		add_err_msg(err, "\nMap data is not the last in the .cub file.");
 }
 
 static void	parse_path(char *line, t_env *env, t_err *err)
@@ -130,5 +130,5 @@ void		parse_env(char *line, t_env *env, t_err *err)
 			parse_color(line, env, err);
 	}
 	else
-		parse_map(line, env);
+		parse_map(line, env, err);
 }

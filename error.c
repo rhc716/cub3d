@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 20:20:55 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/15 13:24:12 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/18 13:51:02 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 int		add_err_msg(t_err *err, char *str)
 {
-	err->env_error_msg = ft_strjoin(err->env_error_msg, str, 1);
+	if (!err->env_error_msg)
+		err->env_error_msg = ft_strjoin(err->env_error_msg, str, 1);
+	else if (!ft_strnstr(err->env_error_msg, str, ft_strlen(err->env_error_msg)))
+		err->env_error_msg = ft_strjoin(err->env_error_msg, str, 1);
 	err->env_error++;
 	return (-1);
 }

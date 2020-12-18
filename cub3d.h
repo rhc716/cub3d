@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:51:24 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/18 02:59:37 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/18 17:32:02 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@
 # define KEY_S				115
 # define KEY_A				97
 # define KEY_D				100
-# define KEY_UP				65362
-# define KEY_DOWN			65364
 # define KEY_LEFT			65361
 # define KEY_RIGHT			65363
+# define KEY_TAB			65289
 # define KeyPressMask		(1L<<0)
 
 typedef struct	s_err
@@ -75,10 +74,17 @@ typedef struct	s_ray
     int			side;
 	double		tilesize_x;
 	double		tilesize_y;
-	int			testv;//test
 	void		*mlx;
 	void		*win;
 	t_img		*img;
+	int			map_on;
+	double		moveSpeed;
+	double		rotSpeed;
+	double		dirX_bak;
+	double		dirY_bak;
+	double		planeX_bak;
+	double		planeY_bak;
+	int			befor_key;
 }				t_ray;
 
 typedef struct	s_env
@@ -115,5 +121,10 @@ int				init_ray(t_ray *ray, t_env *env);
 void			init_error(t_err *err);
 int				ray_caster(t_env *env, t_err *err, int c);
 void			ray_main_loop(t_env *env);
-
+void			draw_map(t_env *env);
+void		 	draw_lines(t_env *env);
+void			draw_line(t_env *env, double x1, double y1, double x2, double y2);
+void			draw_background(t_env *env, int c);
+int				deal_key(int key_code, t_env *env);
+int 			ft_close(t_env *env);
 #endif

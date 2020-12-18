@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 18:23:55 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/18 00:12:36 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/18 13:39:42 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,12 @@ int			check_valid_env(t_env *env, t_err *err) // mlx)
 	mlx_get_screen_size(mlx, &sizex, &sizey);
 	mlx_destroy_display(mlx);
 	free(mlx);
-	if (env->width <= 0 || env->height <= 0 || env->width > sizex || env->height > sizey)
+	if (env->width <= 0 || env->height <= 0)
 		add_err_msg(err, "\nThe resolution value is not valid");
+	if (env->width > sizex)
+		env->width = sizex;
+	if (env->height > sizey)
+		env->height = sizey;
 	if (!env->no || !env->so || !env->we || !env->ea || !env->sp)
 		add_err_msg(err, "\nThere is at least 1 incomplete image path");
 	check_valid_map(env, err);

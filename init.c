@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 18:35:22 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/17 23:40:27 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/18 17:16:10 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,18 @@ int			init_ray(t_ray *ray, t_env *env)
 	env->ray = ray;
 	ray->planeX = 0;
 	ray->planeY = 0.66;
-	ray->posX = env->posX_init;
-	ray->posY = env->posY_init;
+	ray->posX = env->posX_init + 0.5;
+	ray->posY = env->posY_init + 0.5;
 	ray->dirX = env->dirX_init;
 	ray->dirY = env->dirY_init;
 	ray->tilesize_x = (double)env->width/(double)env->col;
 	ray->tilesize_y = (double)env->height/(double)env->row;
 	ray->mlx = NULL;
 	ray->win = NULL;
+	ray->map_on = 0;
+	ray->moveSpeed = 0.12;
+	ray->rotSpeed = 0.1;
+	ray->dirX_bak = 0;
 	if (!(ray->img = (t_img *)malloc(sizeof(t_img))))
 		return (0);
 	return (1);
