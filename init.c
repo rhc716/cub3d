@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 18:35:22 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/18 17:16:10 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/19 04:06:37 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,8 @@ int			init_ray(t_ray *ray, t_env *env)
 	ray->mlx = NULL;
 	ray->win = NULL;
 	ray->map_on = 0;
-	ray->moveSpeed = 0.12;
-	ray->rotSpeed = 0.1;
-	ray->dirX_bak = 0;
+	ray->moveSpeed = 0.05;
+	ray->rotSpeed = 0.05;
 	if (!(ray->img = (t_img *)malloc(sizeof(t_img))))
 		return (0);
 	return (1);

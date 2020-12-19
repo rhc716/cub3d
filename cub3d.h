@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:51:24 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/18 17:32:02 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/19 21:35:17 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,6 @@ typedef struct	s_ray
 	int			map_on;
 	double		moveSpeed;
 	double		rotSpeed;
-	double		dirX_bak;
-	double		dirY_bak;
-	double		planeX_bak;
-	double		planeY_bak;
-	int			befor_key;
 }				t_ray;
 
 typedef struct	s_env

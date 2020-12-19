@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 16:50:37 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/18 16:50:52 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/19 21:42:01 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	draw_line(t_env *env, double x1, double y1, double x2, double y2)
 	deltaY /= step;
 	while (fabs(x2 - x1) > 0.01 || fabs(y2 - y1) > 0.01)
 	{
-		env->ray->img->data[to_coord(x1, y1, env)] = 0x00b3b3;
+		env->ray->img->data[to_coord(x1, y1, env)] = 0x663300;
 		x1 += deltaX;
 		y1 += deltaY;
 	}
@@ -95,9 +95,9 @@ void	draw_map(t_env *env)
 		while (env->map[i][j])
 		{
 			if (env->map[i][j] == '1')
-				draw_block(env, j, i, 0x000080);
-			if (i == (int)env->ray->posX && j == (int)env->ray->posY)
-				draw_block(env, j, i, 0xFFCC33);
+				draw_block(env, j, i, 0x999999);
+			if (env->map[i][j] == '2')
+				draw_block(env, j, i, 0x33CC99);
 			j++;
 		}
 		i++;

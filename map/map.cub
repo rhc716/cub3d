@@ -1,4 +1,4 @@
-R 1920 1080
+R 800 640
 NO ./texture/wall_n.xpm
 SO ./texture/wall_n.xpm
 WE ./texture/wall_n.xpm

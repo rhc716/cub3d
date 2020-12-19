@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 22:56:54 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/18 18:11:56 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/19 21:45:10 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	draw_vertical(t_env *env, int x, int y1, int y2)
 	int		i;
 	t_ray	*ray;
 	int		 color;
-	
+
 	ray = env->ray;
 	color = 0xCCCCCC;
 	if (env->map[ray->mapX][ray->mapY] == '1')
@@ -31,6 +31,26 @@ void	draw_vertical(t_env *env, int x, int y1, int y2)
 		ray->img->data[i * env->width + x] = color;
 }
 
+void	draw_player(t_env *env, int color)
+{
+	t_ray	*ray;
+	double	x;
+	double	y;
+	int		i;
+	int		j;
+
+	ray = env->ray;
+	x = ray->posX;
+	y = ray->posY;
+	i = -4;
+	while (++i < 4)
+	{
+		j = -4;
+		while (++j < 4)
+			ray->img->data[(int)(floor(x * ray->tilesize_y + i)) * env->width + (int)(y * ray->tilesize_x + j)] = color;
+	}
+}
+
 void	ray_main_loop(t_env *env)
 {
 	int		x;
@@ -38,6 +58,8 @@ void	ray_main_loop(t_env *env)
 
 	x = -1;
 	ray = env->ray;
+	if (ray->map_on == 1)
+		draw_player(env, 0xFFCC33);
 	while (++x < env->width)
 	{
 		ray->cameraX = 2 * x / (double)env->width - 1;
@@ -45,8 +67,8 @@ void	ray_main_loop(t_env *env)
 		ray->rayDirY = ray->dirY + ray->planeY * ray->cameraX;
 		ray->mapX = (int)ray->posX;
 		ray->mapY = (int)ray->posY;
-		ray->deltaDistX = fabs(1 / ray->rayDirX);
-		ray->deltaDistY = fabs(1 / ray->rayDirY);
+    	ray->deltaDistX = (ray->rayDirY == 0) ? 0 : ((ray->rayDirX == 0) ? 1 : fabs(1 / ray->rayDirX));
+    	ray->deltaDistY = (ray->rayDirX == 0) ? 0 : ((ray->rayDirY == 0) ? 1 : fabs(1 / ray->rayDirY));
 		ray->hit = 0;
 		if (ray->rayDirX < 0)
     	{
@@ -82,34 +104,26 @@ void	ray_main_loop(t_env *env)
         		ray->mapY += ray->stepY;
         		ray->side = 1;
         	}
-        	if (!ft_strchr("0NEWS", env->map[ray->mapX][ray->mapY]))
+        	if (!ft_strchr("02NEWS", env->map[ray->mapX][ray->mapY]))
 				ray->hit = 1;
     	}
-		if (ray->map_on == 1)
+		if (ray->map_on == 1 && x % 20 == 0)
 		{
-			double	deltaX;
-			double	deltaY;
-			double	step;
-			double x1 = ray->posX;
-			double y1 = ray->posY;
-			double x2 = ray->sideDistX + ray->posX;
-			double y2 = ray->sideDistY + ray->posY;
-			deltaX = ray->sideDistX;
-			deltaY = ray->sideDistY;
-			step = (fabs(deltaX) > fabs(deltaY)) ? fabs(deltaX) : fabs(deltaY);
-			deltaX /= step;
-			deltaY /= step;
-			if (!env)
-				printf("x1 : %f, y1 : %f, x2 : %f, y2 : %f \n ", x1, y1, x2, y2);
-			/*
-			while (fabs(x2 - x1) > 0.01 || fabs(y2 - y1) > 0.01)
+			double x1;
+			double y1;
+			double dDistX;
+			double dDistY;
+			
+			dDistX = ray->rayDirX / ray->tilesize_y;
+			dDistY = ray->rayDirY / ray->tilesize_x;
+			x1 = ray->posX;
+			y1 = ray->posY;
+			while (ft_strchr("02NEWS", env->map[(int)x1][(int)y1]))
 			{
-				printf("x1 : %f, y1 : %f, x2 : %f, y2 : %f \n ", x1, y1, x2, y2);
-				env->ray->img->data[(int)floor(y1) * env->width + (int)floor(x1)] = 0x00b3b3;
-				x1 += deltaX;
-				y1 += deltaY;
+				x1 += dDistX;
+				y1 += dDistY;
+				ray->img->data[(int)(floor(x1 * ray->tilesize_y) * env->width + (int)(y1 * ray->tilesize_x))] = 0x3399FF;
 			}
-			*/
 		}
     	if (ray->side == 0)
 			ray->perpWallDist = (ray->mapX - ray->posX + (1 - ray->stepX) / 2) / ray->rayDirX;
