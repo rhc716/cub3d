@@ -1,9 +1,9 @@
 R 800 640
-NO ./texture/wall_n.xpm
-SO ./texture/wall_n.xpm
-WE ./texture/wall_n.xpm
-EA ./texture/wall_n.xpm
-S ./texture/wall_n.xpm
+NO ./texture/wall_0.xpm
+SO ./texture/wall_1.xpm
+WE ./texture/wall_2.xpm
+EA ./texture/wall_3.xpm
+S ./texture/sprite.xpm
 
 F 204,204,153
 C 000,051,204

@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/07 18:09:34 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/19 20:18:56 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/20 21:03:41 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,10 @@ int			main(int argc, char **argv)
 		return (print_error_exit(&err, env, "main() input option error"));
 	if (argc == 2 || (argc == 3 && !ft_strncmp(argv[2], "--save", 6)))
 	{
-		if (read_file(argv[1], env, &err) == -1)
+		if (read_file(argv[1], env, &err) == -1 || err.env_error > 0)
 			return (print_error_exit(&err, env, ""));
-		if (argc == 2)
-			ray_caster(env, &err, 1);
-		else
-			ray_caster(env, &err, 2);
+		if (ray_caster(env, &err, argc) == -1 || err.env_error > 0)
+			return (print_error_exit(&err, env, ""));
 	}
 	return (free_all(env));
 }

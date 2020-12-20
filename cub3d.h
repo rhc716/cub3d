@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:51:24 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/19 21:35:17 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/20 22:37:09 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,15 @@ typedef struct	s_img
 	int			size_l;
 	int			bpp;
 	int			endian;
+	int			width;
+	int			height;
 }				t_img;
+
+typedef struct	s_pos
+{
+	int			x;
+	int			y;
+}				s_pos;
 
 typedef struct	s_ray
 {
@@ -80,6 +88,14 @@ typedef struct	s_ray
 	int			map_on;
 	double		moveSpeed;
 	double		rotSpeed;
+	int			lineHeight;
+	int			drawStart;
+	int			drawEnd;
+	int			**texture;
+	s_pos		*texture_size;
+	double		wall_x;
+	int			texNum;
+	
 }				t_ray;
 
 typedef struct	s_env
@@ -104,7 +120,7 @@ typedef struct	s_env
 }				t_env;
 
 void			parse_env(char *line, t_env *env, t_err *err);
-void			free_2d_array(char **array);
+void			free_2d_array(void **array, int len);
 int				check_valid_path(char *path);
 int				free_all(t_env *env);
 int				print_error_exit(t_err *err, t_env *env, char *str);
@@ -115,11 +131,13 @@ int				init_env(t_env **env);
 int				init_ray(t_ray *ray, t_env *env);
 void			init_error(t_err *err);
 int				ray_caster(t_env *env, t_err *err, int c);
-void			ray_main_loop(t_env *env);
+void			ray_loop(t_env *env);
 void			draw_map(t_env *env);
 void		 	draw_lines(t_env *env);
 void			draw_line(t_env *env, double x1, double y1, double x2, double y2);
 void			draw_background(t_env *env, int c);
+void			draw_player(t_env *env, int color);
+void			draw_map_ray(t_env *env, t_ray *ray, int x);
 int				deal_key(int key_code, t_env *env);
 int 			ft_close(t_env *env);
 #endif

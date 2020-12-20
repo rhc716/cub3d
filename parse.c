@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:28:44 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/18 14:05:37 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/20 22:37:22 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	parse_color(char *s, t_env *env, t_err *err)
 		else
 			env->ceiling = env->ceiling * 256 + ft_atoi(temp[i++]);
 	}
-	free_2d_array(temp);
+	free_2d_array((void **)temp, 0);
 }
 
 static void	parse_width_height(char *line, t_env *env, t_err *err)

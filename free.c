@@ -6,19 +6,33 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 20:20:39 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/15 18:19:28 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/20 23:00:56 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	free_2d_array(char **array)
+void	free_2d_array(void **array, int len)
 {
 	int i;
 
 	i = 0;
 	while (array[i])
-		free(array[i++]);
+	{
+		if (len != 0)
+		{
+			if (i < len)
+				free(array[i]);
+		}
+		else
+			free(array[i]);
+		i++;
+		if (len != 0 && i == len)
+		{
+			free(array);
+			return ;
+		}
+	}
 	free(array);
 }
 
@@ -30,7 +44,7 @@ int		free_all(t_env *env)
 	free(env->ea);
 	free(env->sp);
 	if (env->map)
-		free_2d_array(env->map);
+		free_2d_array((void **)env->map, 0);
 	if (env->ray)
 	{
 		if (env->ray->mlx)
@@ -41,6 +55,10 @@ int		free_all(t_env *env)
 			free(env->ray->mlx);
 		}
 		free(env->ray->img);
+		if (env->ray->texture)
+			free_2d_array((void **)(env->ray->texture), 5);
+		if (env->ray->texture_size)
+			free(env->ray->texture_size);
 	}
 	free(env->ray);
 	free(env);
