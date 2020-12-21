@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:51:24 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/20 22:37:09 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/21 20:32:15 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,10 @@ typedef struct	s_ray
 	int			**texture;
 	s_pos		*texture_size;
 	double		wall_x;
+	int			tex_x;
+	int			tex_y;
 	int			texNum;
-	
+	double		*zbuffer;
 }				t_ray;
 
 typedef struct	s_env
@@ -140,4 +142,5 @@ void			draw_player(t_env *env, int color);
 void			draw_map_ray(t_env *env, t_ray *ray, int x);
 int				deal_key(int key_code, t_env *env);
 int 			ft_close(t_env *env);
+int				load_texture(t_env *env, t_ray *ray, t_err *err);
 #endif

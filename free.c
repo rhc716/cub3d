@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 20:20:39 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/20 23:00:56 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/21 20:36:55 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int		free_all(t_env *env)
 			free_2d_array((void **)(env->ray->texture), 5);
 		if (env->ray->texture_size)
 			free(env->ray->texture_size);
+		if (env->ray->zbuffer)
+			free(env->ray->zbuffer);
 	}
 	free(env->ray);
 	free(env);
