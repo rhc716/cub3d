@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 22:56:54 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/21 20:38:24 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/22 22:38:21 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,23 +64,19 @@ void	ray_loop_cal_hit(t_env *env, t_ray *ray)
 
 void	ray_cal_wall(t_env *env, t_ray *ray)
 {
-	ray->lineHeight = (int)(env->height / ray->perpWallDist);
-	ray->drawStart = -ray->lineHeight / 2 + env->height / 2;
-	ray->drawEnd = ray->lineHeight / 2 + env->height / 2;
+	ray->line_H = (int)(env->height / ray->perpWallDist);
+	ray->drawStart = (-ray->line_H + env->height) / 2;
+	ray->drawEnd = (ray->line_H + env->height) / 2;
 	if (ray->drawStart < 0)
 		ray->drawStart = 0;
 	if (ray->drawEnd >= env->height)
 		ray->drawEnd = env->height - 1;
 	if (ray->side == 0)
-	{
 		ray->texNum = (ray->rayDirX > 0) ? 1 : 0;
-		ray->wall_x = ray->posY + ray->perpWallDist * ray->rayDirY;
-	}
 	else
-	{
 		ray->texNum = (ray->rayDirY < 0) ? 3 : 2;
-		ray->wall_x = ray->posX + ray->perpWallDist * ray->rayDirX;
-	}
+	ray->wall_x = (ray->side == 0) ? ray->posY + ray->perpWallDist * ray->rayDirY
+	: ray->posX + ray->perpWallDist * ray->rayDirX;
 	ray->wall_x -= floor(ray->wall_x);
 	ray->tex_x =
 		(int)(ray->wall_x * (double)ray->texture_size[ray->texNum].x);
@@ -105,30 +101,29 @@ void	ray_loop_init(t_env *env, t_ray *ray, int x)
 	ray->zbuffer[x] = ray->perpWallDist;
 }
 
-void	ray_loop(t_env *env)
+void	ray_loop(t_env *env, t_ray	*ray)
 {
 	int		x;
-	t_ray	*ray;
-	double	step;
-	double	tex_pos;
+	double	st;
 	int		color;
 
 	x = -1;
-	ray = env->ray;
 	while (++x < env->width)
 	{
 		ray_loop_init(env, ray, x);
-		if (ray->map_on == 0)
+		if (env->map_mode == 0)
 		{
 			ray_cal_wall(env, ray);
-			step = ray->texture_size[ray->texNum].y * 1.0 / ray->lineHeight;
-			tex_pos = (ray->drawStart - env->height / 2 + ray->lineHeight / 2) * step;
+			st = ray->texture_size[ray->texNum].y * 1.0 / ray->line_H;
+			ray->tex_pos = (ray->drawStart + (ray->line_H - env->height) / 2) * st;
 			while (ray->drawStart < ray->drawEnd)
 			{
-				ray->tex_y = (int)tex_pos;
-				tex_pos += step;
+				ray->tex_y = (int)ray->tex_pos;
+				ray->tex_pos += st;
 				color = ray->texture[ray->texNum][
 					ray->texture_size[ray->texNum].x * ray->tex_y + ray->tex_x];
+				if (env->night_mode == 1)
+					color = (color >> 1) & 8355711;
 				ray->img->data[ray->drawStart * env->width + x] = color;
 				ray->drawStart++;
 			}

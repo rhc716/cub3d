@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 18:23:55 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/18 13:39:42 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/22 17:08:00 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ static int	check_valid_map(t_env *env, t_err *err)
 				return (add_err_msg(err, "\nMap error, illegal characters"));
 			if (env->map[i][j] == '0' && find_hole_in_map(env->map, i, j) == -1)
 				return (add_err_msg(err, "\nMap error, 0 next blank or NULL"));
+			if (env->map[i][j] == '2')
+				env->sprite_cnt++;
 		}
 	}
 	if (cnt != 1)

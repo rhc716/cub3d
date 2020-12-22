@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/21 17:20:51 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/21 17:21:23 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/22 22:36:29 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,16 @@ int			load_texture(t_env *env, t_ray *ray, t_err *err)
 	t_img	buf;
 
 	if (!(ray->texture =
-		(int **)malloc(sizeof(int*) * (5))))
+		(int **)malloc(sizeof(int*) * (env->tex_cnt))))
 		return (add_err_msg(err, "malloc error"));
 	if (!(ray->texture_size =
-		(s_pos *)malloc(sizeof(s_pos) * (5))))
+		(s_pos *)malloc(sizeof(s_pos) * (env->tex_cnt))))
 		return (add_err_msg(err, "malloc error"));
 	load_image(ray, 0, env->no, &buf, err);
 	load_image(ray, 1, env->so, &buf, err);
 	load_image(ray, 2, env->we, &buf, err);
 	load_image(ray, 3, env->ea, &buf, err);
 	load_image(ray, 4, env->sp, &buf, err);
+	load_image(ray, 5, "./texture/ceiling.xpm", &buf, err);
 	return (0);
 }

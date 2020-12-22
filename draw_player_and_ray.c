@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/20 19:30:42 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/20 19:55:12 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/22 18:19:17 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	draw_map_ray(t_env *env, t_ray *ray, int x)
 	double dDistX;
 	double dDistY;
 
-	if (ray->map_on == 1 && x % 20 == 0)
+	if (env->map_mode == 1 && x % 20 == 0)
 	{
 		dDistX = ray->rayDirX / ray->tilesize_y;
 		dDistY = ray->rayDirY / ray->tilesize_x;

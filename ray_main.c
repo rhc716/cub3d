@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 17:17:38 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/21 20:35:54 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/22 20:29:32 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ void	init_window(t_ray *ray, t_env *env)
 
 int		main_loop(t_env *env)
 {
-	if (env->ray->map_on == 1)
+	t_ray	*ray;
+	int		color;
+
+	ray = env->ray;
+	if (env->map_mode == 1)
 	{
 		draw_background(env, 1);
 		draw_map(env);
@@ -37,8 +41,13 @@ int		main_loop(t_env *env)
 	}
 	else
 		draw_background(env, 2);
-	ray_loop(env);
+	ray_loop(env, ray);
+	draw_sprite(env, ray);
 	mlx_put_image_to_window(env->ray->mlx, env->ray->win, env->ray->img->img, 0, 0);
+	color = (env->night_mode == 1 || env->map_mode == 1) ? 0xFF9933 : 0xCCFF33;
+	mlx_string_put(ray->mlx, ray->win, 1, 15, color, "Map Mode : Tab");
+	mlx_string_put(ray->mlx, ray->win, 1, 28, color, "Night Mode : 1");
+	mlx_string_put(ray->mlx, ray->win, 1, 41, color, "Exit : esc");
 	return (0);
 }
 
@@ -47,13 +56,16 @@ int	ray_caster(t_env *env, t_err *err, int argc)
 	t_ray *ray;
 
 	if (!(ray = (t_ray *)malloc(sizeof(t_ray))) || !init_ray(ray, env)
-	|| !(ray->zbuffer = (double *)malloc(sizeof(double) * (env->width))))
+	|| !(ray->zbuffer = (double *)malloc(sizeof(double) * (env->width)))
+	|| !(ray->sprite = (t_sprite *)malloc(sizeof(t_sprite) * env->sprite_cnt))
+	|| !(ray->sp_env = (t_sprite_env *)malloc(sizeof(t_sprite_env))))
 		return (add_err_msg(err, "malloc error"));
 	if (argc == 2)
 	{
 		init_window(ray, env);
 		if (load_texture(env, ray, err) == -1 || err->env_error > 0)
 			return (add_err_msg(err, "texture load error"));
+		save_sprite_xy(env);
 		mlx_hook(ray->win, X_EVENT_KEY_PRESS, KeyPressMask, &deal_key, env);
 		mlx_loop_hook(ray->mlx, &main_loop, env);
 		mlx_loop(ray->mlx);

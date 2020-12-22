@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:51:24 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/21 20:32:15 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/22 21:30:56 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define X_EVENT_KEY_EXIT	17
 # define X_EVENT_RED_CROSS	33
 # define KEY_ESC			65307
+# define KEY_1				49
 # define KEY_W				119
 # define KEY_S				115
 # define KEY_A				97
@@ -58,47 +59,75 @@ typedef struct	s_pos
 	int			y;
 }				s_pos;
 
-typedef struct	s_ray
+typedef struct	s_sprite
 {
-	double		posX;
-	double		posY;
-	double		dirX;
-	double		dirY;
-	double		planeX;
-	double		planeY;
-	double		cameraX;
-	double		rayDirX;
-	double		rayDirY;
-	int			mapX;
-	int			mapY;
-	double		sideDistX;
-    double		sideDistY;
-	double		deltaDistX;
-	double		deltaDistY;
-	double		perpWallDist;
-	int			stepX;
-    int			stepY;
-	int			hit;
-    int			side;
-	double		tilesize_x;
-	double		tilesize_y;
-	void		*mlx;
-	void		*win;
-	t_img		*img;
-	int			map_on;
-	double		moveSpeed;
-	double		rotSpeed;
-	int			lineHeight;
-	int			drawStart;
-	int			drawEnd;
-	int			**texture;
-	s_pos		*texture_size;
-	double		wall_x;
-	int			tex_x;
-	int			tex_y;
-	int			texNum;
-	double		*zbuffer;
-}				t_ray;
+	double		x;
+	double		y;
+	double		dist;
+}				t_sprite;
+
+typedef struct	s_sprite_env
+{
+	double		sprite_x;
+	double		sprite_y;
+	double		invDet;
+	double		transform_x;
+	double		transform_y;
+	int			sprite_screen_x;
+	int			sprite_h;
+	int			sprite_w;
+	int			draw_start_y;
+	int			draw_end_y;
+	int			draw_start_x;
+	int			draw_end_x;
+	int			vDiv;
+	double		vMove;
+}				t_sprite_env;
+
+typedef struct		s_ray
+{
+	double			posX;
+	double			posY;
+	double			dirX;
+	double			dirY;
+	double			planeX;
+	double			planeY;
+	double			cameraX;
+	double			rayDirX;
+	double			rayDirY;
+	int				mapX;
+	int				mapY;
+	double			sideDistX;
+    double			sideDistY;
+	double			deltaDistX;
+	double			deltaDistY;
+	double			perpWallDist;
+	int				stepX;
+    int				stepY;
+	int				hit;
+    int				side;
+	double			tilesize_x;
+	double			tilesize_y;
+	void			*mlx;
+	void			*win;
+	t_img			*img;
+	double			moveSpeed;
+	double			rotSpeed;
+	int				line_H;
+	int				drawStart;
+	int				drawEnd;
+	int				**texture;
+	s_pos			*texture_size;
+	t_sprite		*sprite;
+	double			wall_x;
+	int				tex_x;
+	int				tex_y;
+	int				texNum;
+	double			tex_pos;
+	double			tex_pos_x;
+	double			*zbuffer;
+	t_sprite_env	*sp_env;
+}					t_ray;
 
 typedef struct	s_env
 {
@@ -118,6 +147,10 @@ typedef struct	s_env
 	double		posY_init;
 	double		dirX_init;
 	double		dirY_init;
+	int			sprite_cnt;
+	int			tex_cnt;
+	int			map_mode;
+	int			night_mode;
 	t_ray		*ray;
 }				t_env;
 
@@ -133,7 +166,7 @@ int				init_env(t_env **env);
 int				init_ray(t_ray *ray, t_env *env);
 void			init_error(t_err *err);
 int				ray_caster(t_env *env, t_err *err, int c);
-void			ray_loop(t_env *env);
+void			ray_loop(t_env *env, t_ray *ray);
 void			draw_map(t_env *env);
 void		 	draw_lines(t_env *env);
 void			draw_line(t_env *env, double x1, double y1, double x2, double y2);
@@ -143,4 +176,7 @@ void			draw_map_ray(t_env *env, t_ray *ray, int x);
 int				deal_key(int key_code, t_env *env);
 int 			ft_close(t_env *env);
 int				load_texture(t_env *env, t_ray *ray, t_err *err);
+void			save_sprite_xy(t_env *env);
+void			draw_sprite(t_env *env, t_ray *ray);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 18:35:22 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/19 04:06:37 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/22 22:36:50 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ int			init_env(t_env **env)
 	(*env)->posY_init = 0;
 	(*env)->dirX_init = 0;
 	(*env)->dirY_init = 0;
+	(*env)->sprite_cnt = 0;
 	(*env)->ray = NULL;
+	(*env)->tex_cnt = 6;
+	(*env)->map_mode = 0;
+	(*env)->night_mode = 0;
 	return (1);
 }
 
@@ -49,7 +53,6 @@ int			init_ray(t_ray *ray, t_env *env)
 	ray->tilesize_y = (double)env->height/(double)env->row;
 	ray->mlx = NULL;
 	ray->win = NULL;
-	ray->map_on = 0;
 	ray->moveSpeed = 0.05;
 	ray->rotSpeed = 0.05;
 	if (!(ray->img = (t_img *)malloc(sizeof(t_img))))
