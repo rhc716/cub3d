@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/17 22:56:54 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/22 22:38:21 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/22 23:32:42 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	ray_loop(t_env *env, t_ray	*ray)
 				color = ray->texture[ray->texNum][
 					ray->texture_size[ray->texNum].x * ray->tex_y + ray->tex_x];
 				if (env->night_mode == 1)
-					color = (color >> 1) & 8355711;
+					color = (color / 2) & 0x7F7F7F;
 				ray->img->data[ray->drawStart * env->width + x] = color;
 				ray->drawStart++;
 			}

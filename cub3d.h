@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:51:24 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/22 21:30:56 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/23 17:57:07 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,5 +178,6 @@ int 			ft_close(t_env *env);
 int				load_texture(t_env *env, t_ray *ray, t_err *err);
 void			save_sprite_xy(t_env *env);
 void			draw_sprite(t_env *env, t_ray *ray);
+int				save_bmp(t_env *env);
 
 #endif

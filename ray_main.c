@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 17:17:38 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/22 20:29:32 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/23 18:03:41 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,21 @@ int	ray_caster(t_env *env, t_err *err, int argc)
 	|| !(ray->sprite = (t_sprite *)malloc(sizeof(t_sprite) * env->sprite_cnt))
 	|| !(ray->sp_env = (t_sprite_env *)malloc(sizeof(t_sprite_env))))
 		return (add_err_msg(err, "malloc error"));
+	init_window(ray, env);
+	if (load_texture(env, ray, err) == -1 || err->env_error > 0)
+		return (add_err_msg(err, "texture load error"));
+	save_sprite_xy(env);
 	if (argc == 2)
 	{
-		init_window(ray, env);
-		if (load_texture(env, ray, err) == -1 || err->env_error > 0)
-			return (add_err_msg(err, "texture load error"));
-		save_sprite_xy(env);
 		mlx_hook(ray->win, X_EVENT_KEY_PRESS, KeyPressMask, &deal_key, env);
 		mlx_loop_hook(ray->mlx, &main_loop, env);
 		mlx_loop(ray->mlx);
 	}
 	else
-		write(1, "screen shot!!\n", 14);
+	{
+		main_loop(env);
+		if (save_bmp(env) == -1)
+			return (add_err_msg(err, "Failed to create screenshot"));
+	}
 	return (0);
 }
