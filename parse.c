@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:28:44 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/20 22:37:22 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/24 20:22:17 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ static void	parse_map(char *line, t_env *env, t_err *err)
 	len = ft_strlen(line);
 	if (env->col < len)
 		env->col = len;
-	if (!env->width || !env->height || !env->no || !env->so || !env->we || !env->ea
-	|| !env->sp || !env->map || !env->floor || !env->ceiling)
+	if (!env->width || !env->height || !env->no || !env->so ||
+		!env->we || !env->ea || !env->sp || !env->map ||
+		!env->floor || !env->ceiling)
 		add_err_msg(err, "\nMap data is not the last in the .cub file.");
 }
 
@@ -118,9 +119,7 @@ void		parse_env(char *line, t_env *env, t_err *err)
 		|| (line[0] == 'W' && line[1] == 'E')
 		|| (line[0] == 'E' && line[1] == 'A')
 		|| (line[0] == 'S' && line[1] == ' '))
-	{
 		parse_path(line, env, err);
-	}
 	else if ((line[0] == 'F' || line[0] == 'C') && line[1] == ' ')
 	{
 		if ((line[0] == 'F' && env->floor != 0)

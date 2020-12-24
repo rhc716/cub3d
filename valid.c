@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 18:23:55 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/22 17:08:00 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/24 21:00:29 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,30 +38,30 @@ static int	find_hole_in_map(char **map, int i, int j)
 	return (-1);
 }
 
-static void set_player_pos_dir(t_env *env, int *cnt, int i, int j)
+static void	set_player_pos_dir(t_env *env, int *cnt, int i, int j)
 {
 	(*cnt)++;
-	env->posX_init = i;
-	env->posY_init = j;
+	env->posx_init = i;
+	env->posy_init = j;
 	if (env->map[i][j] == 'N')
 	{
-		env->dirX_init = -1;
-		env->dirY_init = 0;
+		env->dirx_init = -1;
+		env->diry_init = 0;
 	}
 	if (env->map[i][j] == 'W')
 	{
-		env->dirX_init = 0;
-		env->dirY_init = -1;
+		env->dirx_init = 0;
+		env->diry_init = -1;
 	}
 	if (env->map[i][j] == 'E')
 	{
-		env->dirX_init = 0;
-		env->dirY_init = 1;
+		env->dirx_init = 0;
+		env->diry_init = 1;
 	}
 	if (env->map[i][j] == 'S')
 	{
-		env->dirX_init = 1;
-		env->dirY_init = 0;
+		env->dirx_init = 1;
+		env->diry_init = 0;
 	}
 }
 
@@ -93,7 +93,7 @@ static int	check_valid_map(t_env *env, t_err *err)
 	return (0);
 }
 
-int			check_valid_env(t_env *env, t_err *err) // mlx)
+int			check_valid_env(t_env *env, t_err *err)
 {
 	void	*mlx;
 	int		sizex;

@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 16:50:37 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/19 21:42:01 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/24 20:39:46 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,48 +17,53 @@ int		to_coord(double x, double y, t_env *env)
 	return ((int)floor(y) * env->width + (int)floor(x));
 }
 
-void	draw_line(t_env *env, double x1, double y1, double x2, double y2)
+void	draw_line(t_env *env, double x1, double y1)
 {
-	double	deltaX;
-	double	deltaY;
+	double	deltax;
+	double	deltay;
 	double	step;
+	double	x2;
+	double	y2;
 
-	deltaX = x2 - x1;
-	deltaY = y2 - y1;
-	step = (fabs(deltaX) > fabs(deltaY)) ? fabs(deltaX) : fabs(deltaY);
-	deltaX /= step;
-	deltaY /= step;
+	x2 = env->x2;
+	y2 = env->y2;
+	deltax = x2 - x1;
+	deltay = y2 - y1;
+	step = (fabs(deltax) > fabs(deltay)) ? fabs(deltax) : fabs(deltay);
+	deltax /= step;
+	deltay /= step;
 	while (fabs(x2 - x1) > 0.01 || fabs(y2 - y1) > 0.01)
 	{
 		env->ray->img->data[to_coord(x1, y1, env)] = 0x663300;
-		x1 += deltaX;
-		y1 += deltaY;
+		x1 += deltax;
+		y1 += deltay;
 	}
 }
 
-void 	draw_lines(t_env *env)
+void	draw_lines(t_env *env, double tx, double ty)
 {
 	int		i;
-	int		j;
-	double	ts_x;
-	double	ts_y;
 
-	i = 0;
-	ts_x = env->ray->tilesize_x;
-	ts_y = env->ray->tilesize_y;
-	while (i * ts_x < env->width)
+	i = -1;
+	while (++i * tx < env->width)
 	{
-		draw_line(env, i * ts_x, 0, i * ts_x, env->height);
-		i++;
+		env->x2 = i * tx;
+		env->y2 = env->height;
+		draw_line(env, i * tx, 0);
 	}
-	draw_line(env, env->col * ts_x - 1, 0, env->col * ts_x - 1, env->height);
-	j = 0;
-	while (j * ts_y < env->height)
+	env->x2 = env->col * tx - 1;
+	env->y2 = env->height;
+	draw_line(env, env->col * tx - 1, 0);
+	i = -1;
+	while (++i * ty < env->height)
 	{
-		draw_line(env, 0, j * ts_y, env->width, j * ts_y);
-		j++;
+		env->x2 = env->width;
+		env->y2 = i * ty;
+		draw_line(env, 0, i * ty);
 	}
-	draw_line(env, 0, env->row * ts_y - 1, env->width, env->row * ts_y - 1);
+	env->x2 = env->width;
+	env->y2 = env->row * ty - 1;
+	draw_line(env, 0, env->row * ty - 1);
 }
 
 void	draw_block(t_env *env, int x, int y, int color)
@@ -97,7 +102,7 @@ void	draw_map(t_env *env)
 			if (env->map[i][j] == '1')
 				draw_block(env, j, i, 0x999999);
 			if (env->map[i][j] == '2')
-				draw_block(env, j, i, 0x33CC99);
+				draw_block(env, j, i, 0x660033);
 			j++;
 		}
 		i++;

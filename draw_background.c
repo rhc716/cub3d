@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/18 16:55:23 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/22 19:48:04 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/24 19:31:12 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	draw_night_ceiling(t_env *env, t_ray *ray)
 	int		color;
 	double	st_y;
 	double	st_x;
-	int x;
-	int y;
+	int		x;
+	int		y;
 
 	ray = env->ray;
 	st_x = ray->texture_size[5].x * 1.0 / env->width;
@@ -32,7 +32,7 @@ void	draw_night_ceiling(t_env *env, t_ray *ray)
 		while (++y < env->height / 2)
 		{
 			color = ray->texture[5][
-				ray->texture_size[5].x * (int)ray->tex_pos + (int)ray->tex_pos_x];
+			ray->texture_size[5].x * (int)ray->tex_pos + (int)ray->tex_pos_x];
 			ray->img->data[y * env->width + x] = color;
 			ray->tex_pos += st_y;
 		}
@@ -68,7 +68,7 @@ void	draw_background(t_env *env, int c)
 	int i;
 	int j;
 	int color;
-	
+
 	color = 0x000000;
 	draw_ceiling(env, c, color);
 	i = env->height / 2 - 1;

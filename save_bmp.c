@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/23 17:51:52 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/23 22:34:49 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/24 20:53:05 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ int		save_bmp(t_env *env)
 	int					size;
 
 	size = 54 + 3 * env->width * env->height;
-	if ((fd = open("./save.bmp", O_WRONLY | O_CREAT | O_TRUNC | O_APPEND, 00755)) < 0)
+	if ((fd = open("./save.bmp", O_WRONLY | O_CREAT | O_TRUNC
+	| O_APPEND, 00755)) < 0)
 		return (-1);
 	write_header(env, fd, size);
 	write_body(env, fd);

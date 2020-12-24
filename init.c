@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 18:35:22 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/22 22:36:50 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/24 20:16:11 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ int			init_env(t_env **env)
 	(*env)->ceiling = 0;
 	(*env)->row = 0;
 	(*env)->col = 0;
-	(*env)->posX_init = 0;
-	(*env)->posY_init = 0;
-	(*env)->dirX_init = 0;
-	(*env)->dirY_init = 0;
+	(*env)->posx_init = 0;
+	(*env)->posy_init = 0;
+	(*env)->dirx_init = 0;
+	(*env)->diry_init = 0;
 	(*env)->sprite_cnt = 0;
 	(*env)->ray = NULL;
 	(*env)->tex_cnt = 6;
@@ -43,18 +43,18 @@ int			init_env(t_env **env)
 int			init_ray(t_ray *ray, t_env *env)
 {
 	env->ray = ray;
-	ray->planeX = 0;
-	ray->planeY = 0.66;
-	ray->posX = env->posX_init + 0.5;
-	ray->posY = env->posY_init + 0.5;
-	ray->dirX = env->dirX_init;
-	ray->dirY = env->dirY_init;
-	ray->tilesize_x = (double)env->width/(double)env->col;
-	ray->tilesize_y = (double)env->height/(double)env->row;
+	ray->planex = 0;
+	ray->planey = 0.66;
+	ray->posx = env->posx_init + 0.5;
+	ray->posy = env->posy_init + 0.5;
+	ray->dirx = env->dirx_init;
+	ray->diry = env->diry_init;
+	ray->tilesize_x = (double)env->width / (double)env->col;
+	ray->tilesize_y = (double)env->height / (double)env->row;
 	ray->mlx = NULL;
 	ray->win = NULL;
-	ray->moveSpeed = 0.05;
-	ray->rotSpeed = 0.05;
+	ray->movespeed = 0.05;
+	ray->rotspeed = 0.05;
 	if (!(ray->img = (t_img *)malloc(sizeof(t_img))))
 		return (0);
 	return (1);
