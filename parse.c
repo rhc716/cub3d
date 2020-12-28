@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/09 15:28:44 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/24 20:22:17 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/28 16:37:14 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,7 @@ static void	parse_path(char *line, t_env *env, t_err *err)
 	char	*path;
 	char	**env_set;
 
-	path = &line[3];
-	if (line[0] == 'S' && line[1] == ' ')
-		path = &line[2];
+	path = (line[0] == 'S' && line[1] == ' ') ? &line[2] : &line[3];
 	if (line[0] == 'N' && line[1] == 'O')
 		env_set = &env->no;
 	else if (line[0] == 'S' && line[1] == 'O')
@@ -54,6 +52,8 @@ static void	parse_path(char *line, t_env *env, t_err *err)
 		env_set = &env->ea;
 	else if (line[0] == 'S' && line[1] == ' ')
 		env_set = &env->sp;
+	else
+		env_set = NULL;
 	if (*env_set == NULL)
 	{
 		*env_set = ft_strdup(path);
