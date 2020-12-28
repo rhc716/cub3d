@@ -6,11 +6,34 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 17:17:38 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/24 21:44:53 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/28 17:52:22 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	save_sprite_xy(t_env *env)
+{
+	int		i;
+	int		j;
+	int		sp_num;
+
+	sp_num = 0;
+	i = -1;
+	while (++i < env->row)
+	{
+		j = -1;
+		while (env->map[i][++j])
+		{
+			if (env->map[i][j] == '2')
+			{
+				env->ray->sprite[sp_num].x = i;
+				env->ray->sprite[sp_num].y = j;
+				sp_num++;
+			}
+		}
+	}
+}
 
 int		ft_close(t_env *env)
 {

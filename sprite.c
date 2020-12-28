@@ -6,34 +6,11 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 19:56:11 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/24 21:47:08 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/28 17:52:59 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	save_sprite_xy(t_env *env)
-{
-	int		i;
-	int		j;
-	int		sp_num;
-
-	sp_num = 0;
-	i = -1;
-	while (++i < env->row)
-	{
-		j = -1;
-		while (env->map[i][++j])
-		{
-			if (env->map[i][j] == '2')
-			{
-				env->ray->sprite[sp_num].x = i;
-				env->ray->sprite[sp_num].y = j;
-				sp_num++;
-			}
-		}
-	}
-}
 
 void	sorting_sprites(t_env *env, t_ray *ray)
 {
@@ -87,13 +64,30 @@ void	set_sprite_env(t_env *env, t_ray *ray, t_sp_env *s_env, int i)
 		s_env->draw_end_x = env->width - 1;
 }
 
+void	set_tex_color(int tex_x, int y, t_env *env, int stripe)
+{
+	int		color;
+	int		tex_y;
+	int		d;
+	t_ray	*ray;
+
+	ray = env->ray;
+	d = (y - ray->sp_env->vmove) * 256 - env->height * 128
+		+ ray->sp_env->sprite_h * 128;
+	tex_y = ((d * ray->texture_size[4].y) / ray->sp_env->sprite_h) / 256;
+	if (tex_x > 0 && tex_y > 0)
+	{
+		color = ray->texture[4][ray->texture_size[4].x * tex_y + tex_x];
+		color = (env->night_mode == 1) ? (color >> 1) & 8355711 : color;
+		if ((color & 0x00FFFFFF) != 0)
+			ray->img->data[y * env->width + stripe] = color;
+	}
+}
+
 void	draw_sprite_texture(t_env *env, t_ray *ray, t_sp_env *s_env, int stripe)
 {
 	int				tex_x;
-	int				tex_y;
 	int				y;
-	int				d;
-	int				color;
 
 	tex_x = (int)(256 *
 			(stripe - (-s_env->sprite_w / 2 + s_env->sprite_screen_x))
@@ -104,13 +98,7 @@ void	draw_sprite_texture(t_env *env, t_ray *ray, t_sp_env *s_env, int stripe)
 		y = s_env->draw_start_y;
 		while (y < s_env->draw_end_y)
 		{
-			d = (y - s_env->vmove) * 256 - env->height * 128
-			+ s_env->sprite_h * 128;
-			tex_y = ((d * ray->texture_size[4].y) / s_env->sprite_h) / 256;
-			color = ray->texture[4][ray->texture_size[4].x * tex_y + tex_x];
-			color = (env->night_mode == 1) ? (color >> 1) & 8355711 : color;
-			if ((color & 0x00FFFFFF) != 0)
-				ray->img->data[y * env->width + stripe] = color;
+			set_tex_color(tex_x, y, env, stripe);
 			y++;
 		}
 	}
