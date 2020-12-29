@@ -6,7 +6,7 @@
 /*   By: hroh <hroh@student.42seoul.kr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/11 17:17:38 by hroh              #+#    #+#             */
-/*   Updated: 2020/12/28 17:52:22 by hroh             ###   ########.fr       */
+/*   Updated: 2020/12/29 14:38:44 by hroh             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int		ray_caster(t_env *env, t_err *err, int argc)
 	if (argc == 2)
 	{
 		mlx_hook(ray->win, X_EVENT_KEY_PRESS, KEY_PRESS_MASK, &deal_key, env);
+		mlx_hook(ray->win, X_EVENT_RED_CROSS, X_EVENT_KEY_EXIT, &ft_close, env);
 		mlx_loop_hook(ray->mlx, &main_loop, env);
 		mlx_loop(ray->mlx);
 	}
